@@ -10,6 +10,7 @@ class Phrase {
     addPhraseToDisplay(){
         const phraseContainer = document.querySelector('#phrase ul');
         const arrPhrase = [...this.phrase];
+        console.log(arrPhrase);
 
         for(let i =0; i < arrPhrase.length; i++){
             // first checks for whitespace
@@ -20,10 +21,15 @@ class Phrase {
             }
             phraseContainer.innerHTML += `
             <li class="hide letter ${arrPhrase[i].toLowerCase()}">${arrPhrase[i].toUpperCase()}</li>
-            `
+            `;
+
         }
 
-
+        for(let i =0; i < phraseContainer.children.length; i++){
+            if(phraseContainer.children[i].textContent = " "){
+                phraseContainer.removeChild(phraseContainer[i]);
+            }
+        }
 
     }
 

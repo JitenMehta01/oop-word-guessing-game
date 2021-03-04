@@ -1,8 +1,8 @@
 class Game {
     constructor(){
         this.missed = 0;
-        this.phrases = this.createPhrases();
-        this.activePhrase = [];
+        this.phrase = this.createPhrases();
+        this.activePhrase;
     }
 
     /**
@@ -11,7 +11,7 @@ class Game {
      */
 
     createPhrases(){
-    const phrases = [{phrase:'The Godfather'}, 
+    const phrases = [{phrase: 'The Godfather'}, 
     {phrase:'Shawshank Redemption'},
     {phrase: 'The Lion King'}, 
     {phrase:'Forrest Gump'}, 
@@ -26,10 +26,24 @@ class Game {
      */
 
     getRandomPhrase(){
-    const phraseLength = this.phrases.length;
+    const phraseLength = this.phrase.length;
     const randomNum = Math.floor(Math.random() * phraseLength);
     
-    return this.phrases[randomNum];
-        
+    return this.phrase[randomNum];
+    }
+
+    /**
+     * Starts the game by selecting a random phrase and displaying to screen
+     */
+
+    startGame(){
+        document.getElementById('overlay').style.opacity = '0';
+        const phrase = new Phrase(this.getRandomPhrase().phrase);
+        this.activePhrase = phrase.phrase;
+        phrase.addPhraseToDisplay();
+
+        console.log(this.activePhrase);
+
+
     }
 }
