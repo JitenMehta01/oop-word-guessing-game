@@ -12,6 +12,12 @@ class Phrase {
         const arrPhrase = [...this.phrase];
 
         for(let i =0; i < arrPhrase.length; i++){
+            // first checks for whitespace
+            if(arrPhrase[i].match(/\s/g)){
+            phraseContainer.innerHTML += `
+            <li class="space"> </li>
+                `
+            }
             phraseContainer.innerHTML += `
             <li class="hide letter ${arrPhrase[i].toLowerCase()}">${arrPhrase[i].toUpperCase()}</li>
             `
