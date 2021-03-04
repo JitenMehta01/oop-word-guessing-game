@@ -40,6 +40,7 @@ class Game {
         document.getElementById('overlay').style.opacity = '0';
         const phrase = new Phrase(this.getRandomPhrase().phrase);
         this.activePhrase = phrase.phrase;
+        console.log(this.activePhrase);
         phrase.addPhraseToDisplay();
 
         console.log(this.activePhrase);

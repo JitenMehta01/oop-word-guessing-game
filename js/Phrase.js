@@ -18,18 +18,14 @@ class Phrase {
             phraseContainer.innerHTML += `
             <li class="space"> </li>
                 `
+            } else {
+                phraseContainer.innerHTML += `
+                <li class="hide letter ${arrPhrase[i].toLowerCase()}">${arrPhrase[i].toUpperCase()}</li>
+                `;       
             }
-            phraseContainer.innerHTML += `
-            <li class="hide letter ${arrPhrase[i].toLowerCase()}">${arrPhrase[i].toUpperCase()}</li>
-            `;
 
         }
 
-        for(let i =0; i < phraseContainer.children.length; i++){
-            if(phraseContainer.children[i].textContent = " "){
-                phraseContainer.removeChild(phraseContainer[i]);
-            }
-        }
 
     }
 
