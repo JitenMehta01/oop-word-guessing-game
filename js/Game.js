@@ -15,7 +15,7 @@ class Game {
     {phrase:'Shawshank Redemption'},
     {phrase: 'The Lion King'}, 
     {phrase:'Forrest Gump'}, 
-    {phrase:'The Silence Of Lambs'}];
+    {phrase:'The Silence Of the Lambs'}];
 
     return phrases;
     }
@@ -27,7 +27,7 @@ class Game {
 
     getRandomPhrase(){
     const phraseLength = this.phrases.length;
-    let randomNum = Math.floor(Math.random() * phraseLength);
+    const randomNum = Math.floor(Math.random() * phraseLength);
     
     return this.phrases[randomNum];
         
