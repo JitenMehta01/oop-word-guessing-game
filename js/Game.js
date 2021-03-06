@@ -1,8 +1,8 @@
 class Game {
     constructor(){
         this.missed = 0;
-        this.phrase = this.createPhrases();
-        this.activePhrase;
+        this.phrases = this.createPhrases();
+        this.activePhrase = this.getRandomPhrase()
     }
 
     /**
@@ -26,10 +26,14 @@ class Game {
      */
 
     getRandomPhrase(){
-    const phraseLength = this.phrase.length;
+    const phraseLength = this.phrases.length;
     const randomNum = Math.floor(Math.random() * phraseLength);
     
-    return this.phrase[randomNum];
+    const phrase = new Phrase(this.phrases[randomNum].phrase);
+    console.log(phrase);
+    phrase.addPhraseToDisplay();
+
+    return phrase
     }
 
     /**
@@ -38,13 +42,9 @@ class Game {
 
     startGame(){
         document.getElementById('overlay').style.opacity = '0';
-        const phrase = new Phrase(this.getRandomPhrase().phrase);
-        this.activePhrase = phrase.phrase;
-        console.log(this.activePhrase);
-        phrase.addPhraseToDisplay();
+    }
 
-        console.log(this.activePhrase);
-
-
+    handleInteraction(e){
+        this.activePhrase.checkLetter(e.target.textContent)
     }
 }

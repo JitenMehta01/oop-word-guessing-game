@@ -9,7 +9,7 @@ class Phrase {
 
     addPhraseToDisplay(){
         const phraseContainer = document.querySelector('#phrase ul');
-        const arrPhrase = [...this.phrase];
+        const arrPhrase = [...this.phrase.toUpperCase()];
         console.log(arrPhrase);
 
         for(let i =0; i < arrPhrase.length; i++){
@@ -20,17 +20,29 @@ class Phrase {
                 `
             } else {
                 phraseContainer.innerHTML += `
-                <li class="hide letter ${arrPhrase[i].toLowerCase()}">${arrPhrase[i].toUpperCase()}</li>
+                <li class="hide letter ${arrPhrase[i]}">${arrPhrase[i]}</li>
                 `;       
             }
 
         }
 
-
+        return arrPhrase;
     }
 
-    checkLetter(){
+    /**
+     * checks is selected letter is in phrase
+     * @param (string) letter - letter to check
+     */
 
+    checkLetter(selectedLetter){
+      let ActivePhrase = [...this.phrase];
+      ActivePhrase.forEach(letter => {
+          if(letter === selectedLetter){
+            console.log(true);
+          } else{
+              console.log(false);
+          }
+      });
     }
 
     showMatchedLetter(){
