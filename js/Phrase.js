@@ -10,7 +10,6 @@ class Phrase {
     addPhraseToDisplay(){
         const phraseContainer = document.querySelector('#phrase ul');
         const arrPhrase = [...this.phrase.toUpperCase()];
-        console.log(arrPhrase);
 
         for(let i =0; i < arrPhrase.length; i++){
             // first checks for whitespace
@@ -37,7 +36,7 @@ class Phrase {
     checkLetter(selectedLetter){
       let ActivePhrase = [...this.phrase];
       ActivePhrase.forEach(letter => {
-          if(letter === selectedLetter){
+          if(letter.toUpperCase() === selectedLetter){
             console.log(true);
           } else{
               console.log(false);

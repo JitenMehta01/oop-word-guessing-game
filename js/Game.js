@@ -30,7 +30,6 @@ class Game {
     const randomNum = Math.floor(Math.random() * phraseLength);
     
     const phrase = new Phrase(this.phrases[randomNum].phrase);
-    console.log(phrase);
     phrase.addPhraseToDisplay();
 
     return phrase
@@ -41,7 +40,7 @@ class Game {
      */
 
     startGame(){
-        document.getElementById('overlay').style.opacity = '0';
+        document.getElementById('overlay').style.display = 'none';
     }
 
     handleInteraction(e){

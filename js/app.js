@@ -5,9 +5,16 @@
 
 
  // click event to start game
- document.getElementById('btn__reset')
+
+ const game = new Game();
+ 
+ document
  .addEventListener('click', e =>{
-    const game = new Game();
+    if(e.target.id === 'btn__reset'){
     game.startGame();
-    game.handleInteraction(e);
+    }
+    if(e.target.className === 'key'){
+      game.handleInteraction(e);
+  }
  })
+ 
