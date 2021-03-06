@@ -1,6 +1,6 @@
 class Phrase {
     constructor(phrase){
-        this.phrase = phrase;
+        this.phrase = [...phrase];
     }
 
     /**
@@ -9,42 +9,51 @@ class Phrase {
 
     addPhraseToDisplay(){
         const phraseContainer = document.querySelector('#phrase ul');
-        const arrPhrase = [...this.phrase.toUpperCase()];
 
-        for(let i =0; i < arrPhrase.length; i++){
+        for(let i =0; i < this.phrase.length; i++){
             // first checks for whitespace
-            if(arrPhrase[i].match(/\s/g)){
+            if(this.phrase[i].match(/\s/g)){
             phraseContainer.innerHTML += `
             <li class="space"> </li>
                 `
             } else {
                 phraseContainer.innerHTML += `
-                <li class="hide letter ${arrPhrase[i]}">${arrPhrase[i]}</li>
+                <li class="hide letter ${this.phrase[i].toLowerCase()}">${this.phrase[i].toUpperCase()}</li>
                 `;       
             }
 
         }
 
-        return arrPhrase;
     }
 
     /**
-     * checks is selected letter is in phrase
+     * checks if selected letter is in phrase and reveals in DOM if true.
      * @param (string) letter - letter to check
      */
 
     checkLetter(selectedLetter){
-      let ActivePhrase = [...this.phrase];
-      ActivePhrase.forEach(letter => {
-          if(letter.toUpperCase() === selectedLetter){
-            console.log(true);
+      this.phrase.forEach(letter => {
+          if(letter.toUpperCase() === selectedLetter.toUpperCase()){
+            let character = document.querySelectorAll(`.${letter.toLowerCase()}`);
+            for(let i =0; i < character.length; i++){
+            character[i].classList.replace('hide', 'show');
+            }
+            return true;
           } else{
-              console.log(false);
+              return false;
           }
       });
     }
 
-    showMatchedLetter(){
-        
-    }
+    // showMatchedLetter(selectedLetter){
+    //     console.log(selectedLetter);
+    //     this.phrase.forEach(letter => {
+    //         if(letter.toUpperCase() === selectedLetter.toUpperCase()){
+    //           let character = document.querySelectorAll(`.${letter.toLowerCase()}`);
+    //           for(let i =0; i < character.length; i++){
+    //           character[i].classList.replace('hide', 'show');
+    //           }
+    //         }
+    //     });
+    // }
 }

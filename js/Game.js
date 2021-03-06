@@ -21,7 +21,7 @@ class Game {
     }
 
     /**
-     * returns a random phrase
+     * Generates a random phrase, and adds it to the DOM via the addPhraseToDisplay method.
      * @return {object} An object containing a phrase.
      */
 
@@ -43,7 +43,8 @@ class Game {
         document.getElementById('overlay').style.display = 'none';
     }
 
+
     handleInteraction(e){
-        this.activePhrase.checkLetter(e.target.textContent)
+        this.activePhrase.checkLetter(e.target.textContent);
     }
 }

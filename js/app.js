@@ -7,7 +7,7 @@
  // click event to start game
 
  const game = new Game();
- 
+
  document
  .addEventListener('click', e =>{
     if(e.target.id === 'btn__reset'){
