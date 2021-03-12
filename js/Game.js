@@ -39,9 +39,8 @@ class Game {
      */
 
     startGame(){
-        const mainContainer = document.querySelector('.main-container');
         const overLay = document.getElementById('overlay');
-        mainContainer.removeChild(overLay);
+        overLay.style.display = 'none';
 
     }
 
@@ -92,6 +91,40 @@ class Game {
             }
                 
         }
+
+        gameOver(){
+            const AllLetters = [...document.querySelectorAll('#phrase ul li')];
+            const hideLetters = [...document.querySelectorAll('.space')];
+            const overLay = document.getElementById('overlay');
+            const h1 = document.createElement('h1');
+            const p = document.createElement('p');
+            const showLetters = AllLetters.filter(letter =>{
+                if(letter.className.includes('show')){
+                    return letter;
+                }    
+            });
+
+            if(showLetters.length + hideLetters.length === game.activePhrase.phrase.length){
+                overLay.className = 'win';
+                overLay.style.display = 'block';
+                h1.textContent = `Congratulations! You've guessed the Phrase`;
+                overLay.appendChild(h1);
+                if(this.missed === 0){
+                    p.textContent = `Well done! You got a perfect score!`;
+                    overLay.appendChild(p);
+                } else{
+                    p.textContent = `Well done. You guessed the phrase with ${this.missed} lives remaining`;
+                    overLay.appendChild(p);
+                }
+            }
+
+            if(this.missed === 5){
+                overLay.className = 'lose';
+                overLay.style.display = 'block';
+                h1.textContent = 'Oh no! You have run out of lives!';
+                overLay.appendChild(h1)
+            }
+        }
     
 
 
@@ -102,7 +135,10 @@ class Game {
 
         if(!checkLetter){
             this.removeLife();
+            this.missed += 1;
         }
+
+        this.gameOver();
 
     }
 }
