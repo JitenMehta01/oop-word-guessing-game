@@ -3,7 +3,6 @@ class Game {
         this.missed = 0;
         this.phrases = this.createPhrases();
         this.activePhrase = this.getRandomPhrase();
-        this.phraseSpace = 0;
     }
     /**
      * Phrases to be used in the game
@@ -40,7 +39,10 @@ class Game {
      */
 
     startGame(){
-        document.getElementById('overlay').style.display = 'none';
+        const mainContainer = document.querySelector('.main-container');
+        const overLay = document.getElementById('overlay');
+        mainContainer.removeChild(overLay);
+
     }
 
     /**
@@ -69,22 +71,38 @@ class Game {
 
     checkforWin(){
         const phraseLength = this.activePhrase.phrase.length;
-        const phraseCharacter = document.querySelectorAll('#phrase ul li');
         let showCharacter = document.querySelectorAll('.show');
         let spaceCharacter = document.querySelectorAll('.space');
 
         if(spaceCharacter.length + showCharacter.length === phraseLength){
-            console.log(true);
+            return true;
         } else {
-            console.log(false);
+            return false;
         }
+        }
+
+        removeLife(){
+            const lives = document.querySelectorAll('.tries img');
+
+            for(let i =0; i < lives.length; i++){
+                if(lives[i].src.includes('images/liveHeart.png')){
+                    lives[i].src = 'images/lostHeart.png';
+                    break;
+                }
+            }
+                
         }
     
 
 
 
     handleInteraction(e){
-        this.activePhrase.checkLetter(e.target.textContent);
-        this.checkforWin();
+        const checkLetter = this.activePhrase.checkLetter(e.target.textContent);
+        this.activePhrase.showMatchedLetter(e.target.textContent);
+
+        if(!checkLetter){
+            this.removeLife();
+        }
+
     }
 }

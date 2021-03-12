@@ -32,28 +32,20 @@ class Phrase {
      */
 
     checkLetter(selectedLetter){
-      this.phrase.forEach(letter => {
-          if(letter.toUpperCase() === selectedLetter.toUpperCase()){
-            let character = document.querySelectorAll(`.${letter.toLowerCase()}`);
-            for(let i =0; i < character.length; i++){
-            character[i].classList.replace('hide', 'show');
-            }
+        if(this.phrase.includes(selectedLetter)){
             return true;
-          } else{
-              return false;
-          }
-      });
+        } 
     }
+    
 
-    // showMatchedLetter(selectedLetter){
-    //     console.log(selectedLetter);
-    //     this.phrase.forEach(letter => {
-    //         if(letter.toUpperCase() === selectedLetter.toUpperCase()){
-    //           let character = document.querySelectorAll(`.${letter.toLowerCase()}`);
-    //           for(let i =0; i < character.length; i++){
-    //           character[i].classList.replace('hide', 'show');
-    //           }
-    //         }
-    //     });
-    // }
+    showMatchedLetter(selectedLetter){
+        this.phrase.forEach(letter => {
+            if(letter.toUpperCase() === selectedLetter.toUpperCase()){
+              let character = document.querySelectorAll(`.${letter.toLowerCase()}`);
+              for(let i =0; i < character.length; i++){
+              character[i].classList.replace('hide', 'show');
+              }
+            }
+        });
+    }
 }
