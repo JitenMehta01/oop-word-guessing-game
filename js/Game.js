@@ -1,6 +1,7 @@
 class Game {
     constructor(){
         this.missed = 0;
+        this.triesLeft = 5;
         this.phrases = this.createPhrases();
         this.activePhrase = this.getRandomPhrase();
     }
@@ -49,25 +50,6 @@ class Game {
      * @return {boolean} True if all letters have been matched. False if not.
      */
 
-    // checkforWin(){
-    //     const win = document.querySelectorAll('.hide');
-
-
-    //     for(let i =0; i < win.length; i++){
-    //         if(win[i].classList.contains('show')){
-    //             console.log(true);
-    //         } else{
-    //             console.log(false);
-    //         }
-    //     }
-    // }
-
-
-    // set a variable to the length of the phrase
-    // create another variable called total anf give it an initial value of 0
-    // if any of the letters in the phrase changes it classname to show, add 1 to the total variable
-    // if the total and phrase length are the same, return true. otherwise return false.
-
     checkforWin(){
         const phraseLength = this.activePhrase.phrase.length;
         let showCharacter = document.querySelectorAll('.show');
@@ -96,7 +78,6 @@ class Game {
             const AllLetters = [...document.querySelectorAll('#phrase ul li')];
             const hideLetters = [...document.querySelectorAll('.space')];
             const overLay = document.getElementById('overlay');
-            const h1 = document.createElement('h1');
             const p = document.createElement('p');
             const showLetters = AllLetters.filter(letter =>{
                 if(letter.className.includes('show')){
@@ -105,29 +86,32 @@ class Game {
             });
 
             if(showLetters.length + hideLetters.length === game.activePhrase.phrase.length){
-                overLay.className = 'win';
-                overLay.style.display = 'block';
-                h1.textContent = `Congratulations! You've guessed the Phrase`;
-                overLay.appendChild(h1);
+                this.appendtoOverlay('win',`Congratulations! You've guessed the Phrase`);
                 if(this.missed === 0){
                     p.textContent = `Well done! You got a perfect score!`;
                     overLay.appendChild(p);
                 } else{
-                    p.textContent = `Well done. You guessed the phrase with ${this.missed} lives remaining`;
+                    p.textContent = `Well done. You guessed the phrase with only ${this.triesLeft} live(s) remaining`;
                     overLay.appendChild(p);
                 }
             }
 
             if(this.missed === 5){
-                overLay.className = 'lose';
-                overLay.style.display = 'block';
-                h1.textContent = 'Oh no! You have run out of lives!';
-                overLay.appendChild(h1)
+                this.appendtoOverlay('lose',`Oh no! You have run out of lives!`);
             }
         }
     
 
-
+                
+        appendtoOverlay(winOrLose, h1Message){
+            const overLay = document.getElementById('overlay');
+            const h1 = document.createElement('h1');
+            overLay.className = winOrLose;
+            overLay.style.display = 'block';
+            h1.textContent = h1Message;
+            overLay.appendChild(h1);
+          } 
+    
 
     handleInteraction(e){
         const checkLetter = this.activePhrase.checkLetter(e.target.textContent);
@@ -136,6 +120,7 @@ class Game {
         if(!checkLetter){
             this.removeLife();
             this.missed += 1;
+            this.triesLeft -= 1;
         }
 
         this.gameOver();
