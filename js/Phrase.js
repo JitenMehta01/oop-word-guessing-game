@@ -32,9 +32,10 @@ class Phrase {
      */
 
     checkLetter(selectedLetter){
-        if(this.phrase.includes(selectedLetter)){
+        const UppercasePhrase = this.phrase.map(letter => letter.toUpperCase());
+        if(UppercasePhrase.includes(selectedLetter.toUpperCase())){
             return true;
-        } 
+        }
     }
     
 
