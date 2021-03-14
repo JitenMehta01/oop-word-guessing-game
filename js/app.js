@@ -1,8 +1,3 @@
-/* Treehouse FSJS Techdegree
- * Project 4 - OOP Game App
- * app.js */
-
-
 
  // click event to start game
 
@@ -10,11 +5,11 @@
 
  document
  .addEventListener('click', e =>{
-    if(e.target.id === 'btn__reset'){
+    if(e.target.id === 'btn__reset'){ // click event for start button
     game.startGame();
     }
     if(e.target.className === 'key'){
-      game.handleInteraction(e);
+      game.handleInteraction(e); // click event for keyboard buttons
     }
  })
  

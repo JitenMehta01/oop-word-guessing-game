@@ -4,7 +4,7 @@ class Phrase {
     }
 
     /**
-     * Displays phrase to gaem board
+     * Displays phrase to game board
      */
 
     addPhraseToDisplay(){
@@ -14,16 +14,12 @@ class Phrase {
             // first checks for whitespace
             if(this.phrase[i].match(/\s/g)){
             phraseContainer.innerHTML += `
-            <li class="space"> </li>
-                `
+            <li class="space"> </li>`
             } else {
                 phraseContainer.innerHTML += `
-                <li class="hide letter ${this.phrase[i].toLowerCase()}">${this.phrase[i].toUpperCase()}</li>
-                `;       
+                <li class="hide letter ${this.phrase[i].toLowerCase()}">${this.phrase[i].toUpperCase()}</li>`;       
             }
-
         }
-
     }
 
     /**
@@ -38,13 +34,15 @@ class Phrase {
         }
     }
     
-
+    /**
+     * Changes class of li item if it matches keyboard button.
+     * @param (string) letter - letter to match
+     */
+    
     showMatchedLetter(selectedLetter){
         console.log(selectedLetter);
         this.phrase.forEach(letter => {
             if(letter.toUpperCase() === selectedLetter.toUpperCase()){
-                
-              console.log(selectedLetter);
               let character = document.querySelectorAll(`.${letter.toLowerCase()}`);
               for(let i =0; i < character.length; i++){
               character[i].classList.replace('hide', 'show');
