@@ -37,11 +37,17 @@ class Game {
 
     /**
      * Starts the game by selecting a random phrase and displaying to screen
+     * removes win or lose classes from overlay so the restart conditional works
      */
 
     startGame(){
         const overLay = document.getElementById('overlay');
         overLay.style.display = 'none';
+        if(overLay.classList.contains('win') || overLay.classList.contains('lose')){
+            overlay.classList.remove('win');
+            overlay.classList.remove('lose');
+            overlay.classList.add('start');
+        }
 
     }
 
@@ -62,6 +68,8 @@ class Game {
         }
         }
 
+    
+
         comparePhraselength(){
             const AllLetters = [...document.querySelectorAll('#phrase ul li')];
             const hideLetters = [...document.querySelectorAll('.space')];
@@ -71,7 +79,7 @@ class Game {
                 }    
             });
 
-            return hideLetters.length + showLetters.length
+            return hideLetters.length + showLetters.length;
 
         }
 
@@ -88,13 +96,12 @@ class Game {
         }
 
         gameOver(){
-            const AllLetters = [...document.querySelectorAll('#phrase ul li')];
-            const hideLetters = [...document.querySelectorAll('.space')];
             const overLay = document.getElementById('overlay');
             const p = document.createElement('p');
             const phraseDisplay = this.comparePhraselength();
 
             if(phraseDisplay === game.activePhrase.phrase.length){
+                console.log(true);
                 this.appendtoOverlay('win',`Congratulations! You've guessed the Phrase`);
                 if(this.missed === 0){
                     p.textContent = `Well done! You got a perfect score!`;
@@ -124,7 +131,7 @@ class Game {
     restartGame(){
         const overlay = document.querySelector('#overlay');        
         if(overlay.classList.contains('win') || overlay.classList.contains('lose')){
-            // resets this missed and this tries Left
+            // resets this missed and this triesLeft
             this.missed = 0;
             this.triesLeft = 5;
             // removes completed / uncompleted phrase
@@ -153,17 +160,9 @@ class Game {
                hearts.forEach(heart => {
                    heart.src = 'images/liveHeart.png';
                });
-
-               this.handleInteraction(e);
-               
-
+        
             })
         }
-        // if overlays class name contains 'win' or 'lose'
-           // remove all li elements containing phrase
-           // call this active phrase.
-           // if keyboard buttons are disabled, enable them all
-           // reset all heart images
 
     }      
 
