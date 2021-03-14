@@ -40,8 +40,11 @@ class Phrase {
     
 
     showMatchedLetter(selectedLetter){
+        console.log(selectedLetter);
         this.phrase.forEach(letter => {
             if(letter.toUpperCase() === selectedLetter.toUpperCase()){
+                
+              console.log(selectedLetter);
               let character = document.querySelectorAll(`.${letter.toLowerCase()}`);
               for(let i =0; i < character.length; i++){
               character[i].classList.replace('hide', 'show');

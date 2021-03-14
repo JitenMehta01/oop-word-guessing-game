@@ -15,6 +15,6 @@
     }
     if(e.target.className === 'key'){
       game.handleInteraction(e);
-  }
+    }
  })
  
