@@ -38,9 +38,8 @@ class Phrase {
      * Changes class of li item if it matches keyboard button.
      * @param (string) letter - letter to match
      */
-    
+
     showMatchedLetter(selectedLetter){
-        console.log(selectedLetter);
         this.phrase.forEach(letter => {
             if(letter.toUpperCase() === selectedLetter.toUpperCase()){
               let character = document.querySelectorAll(`.${letter.toLowerCase()}`);

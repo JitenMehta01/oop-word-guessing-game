@@ -102,13 +102,21 @@ class Game {
      * a refactoring method that helps to build out win or loss message
      */
 
-    appendtoOverlay(winOrLose, h1Message){
+    appendtoOverlay(winOrLose, h1Message, pMessage){
     const overLay = document.getElementById('overlay');
-    const h1 = document.createElement('h1');
+    const h1 = document.querySelector('#game-over-message');
+    const p = document.createElement('p');
     overLay.className = winOrLose;
     overLay.style.display = 'block';
     h1.textContent = h1Message;
     overLay.appendChild(h1);
+    if(this.missed === 0){
+        p.textContent = `Well done! You got a perfect score!`;
+        overLay.appendChild(p);
+    } else{
+    p.textContent = pMessage;
+    overLay.appendChild(p);
+      }
     } 
 
     /**
@@ -116,22 +124,13 @@ class Game {
      */
 
     gameOver(){
-        const overLay = document.getElementById('overlay');
-        const p = document.createElement('p');
         const phraseDisplay = this.comparePhraselength();
+        const overLay = document.getElementById('overlay');
         if(phraseDisplay === game.activePhrase.phrase.length){
-            console.log(true);
-            this.appendtoOverlay('win',`Congratulations! You've guessed the Phrase`);
-            if(this.missed === 0){
-                p.textContent = `Well done! You got a perfect score!`;
-                overLay.appendChild(p);
-            } else{
-                p.textContent = `Well done. You guessed the phrase with only ${this.triesLeft} live(s) remaining`;
-                overLay.appendChild(p);
-            }
-        }
-        if(this.missed === 5){
-            this.appendtoOverlay('lose',`Oh no! You have run out of lives!`);
+            this.appendtoOverlay('win',`Congratulations! You've guessed the Phrase`, 
+            `Well done. You guessed the phrase with only ${this.triesLeft} live(s) remaining`);
+        } else if(this.missed === 5){
+            this.appendtoOverlay('lose',`Oh no! You have run out of lives!`, 'Try again by clicking the restart Game button.');
         }
     }
     
@@ -168,6 +167,12 @@ class Game {
                hearts.forEach(heart => {
                    heart.src = 'images/liveHeart.png';
                });
+               // removes winning message
+               const h1 = document.querySelector('#game-over-message');
+               h1.textContent = '';
+               const p = overlay.querySelector('p');
+               overlay.removeChild(p);
+               
             })
         }
     }      

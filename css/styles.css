@@ -202,3 +202,13 @@ button {
 .lose a {
   color: var(--color-lose);
 }
+
+.win, .lose{
+  display: flex!important;
+  justify-content: center;
+  align-items: center;
+}
+
+.win button,.lose button{
+  margin: 20px auto 0 auto;
+}
