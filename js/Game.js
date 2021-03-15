@@ -128,9 +128,9 @@ class Game {
         const overLay = document.getElementById('overlay');
         if(phraseDisplay === game.activePhrase.phrase.length){
             this.appendtoOverlay('win',`Congratulations! You've guessed the Phrase`, 
-            `Well done. You guessed the phrase with only ${this.triesLeft} live(s) remaining`);
+            `Well done. You guessed the phrase with ${this.triesLeft} live(s) remaining`);
         } else if(this.missed === 5){
-            this.appendtoOverlay('lose','Oh no! You have run out of lives!', 'Try again by clicking the restart Game button.');
+            this.appendtoOverlay('lose','Oh no! You have run out of lives!', 'Try again by clicking the start Game button.');
         }
     }
     
@@ -183,18 +183,16 @@ class Game {
      */
 
     handleInteraction(e){
-        e.target.disabled = true; // disables clicked letter on keyboard
-        const checkLetter = this.activePhrase.checkLetter(e.target.textContent);
-        this.activePhrase.showMatchedLetter(e.target.textContent);
-        if(!checkLetter){
+        const checkLetter = this.activePhrase.checkLetter(e);
+        this.activePhrase.showMatchedLetter(e);
+
+        if(checkLetter === false){
             this.removeLife();
-            e.target.classList.add('wrong');
             this.missed += 1;
             this.triesLeft -= 1;
-        } else{
-            e.target.classList.add('chosen');
-        }
+        } 
         this.gameOver();
         this.restartGame();
+        
     }
 }

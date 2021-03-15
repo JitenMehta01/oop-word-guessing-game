@@ -27,10 +27,12 @@ class Phrase {
      * @param (string) letter - letter to check
      */
 
-    checkLetter(selectedLetter){
-        const UppercasePhrase = this.phrase.map(letter => letter.toUpperCase());
-        if(UppercasePhrase.includes(selectedLetter.toUpperCase())){
+    checkLetter(e){
+        if(this.upperCasePhrase.includes(e.toUpperCase())){
+            console.log(e.toUpperCase());
             return true;
+        } else if(e.match(/^[A-Za-z]{1}$/)){
+            return false;
         }
     }
     
@@ -39,14 +41,36 @@ class Phrase {
      * @param (string) letter - letter to match
      */
 
-    showMatchedLetter(selectedLetter){
+    showMatchedLetter(e){
         this.phrase.forEach(letter => {
-            if(letter.toUpperCase() === selectedLetter.toUpperCase()){
+            if(letter.toUpperCase() === e.toUpperCase()){
               let character = document.querySelectorAll(`.${letter.toLowerCase()}`);
               for(let i =0; i < character.length; i++){
               character[i].classList.replace('hide', 'show');
               }
             }
         });
+        const KeyBoardbuttons = document.querySelectorAll('.keyrow button');
+
+        for(let i =0; i < KeyBoardbuttons.length;i++){
+            if(e === KeyBoardbuttons[i].textContent && this.upperCasePhrase.includes(e.toUpperCase())){
+             KeyBoardbuttons[i].disabled = true;
+             KeyBoardbuttons[i].classList.add('chosen');
+             break;
+            } else if(e === KeyBoardbuttons[i].textContent){
+            if(KeyBoardbuttons[i].disabled === true){}
+            KeyBoardbuttons[i].disabled = true;
+            KeyBoardbuttons[i].classList.add('wrong');
+            break;
+            }
+        };
+
+    }
+
+
+    get upperCasePhrase(){
+        return this.phrase.map(letter => letter.toUpperCase());
     }
 }
+
+// letter.classList.add('wrong');
