@@ -28,12 +28,24 @@ class Phrase {
      */
 
     checkLetter(e){
-        if(this.upperCasePhrase.includes(e.toUpperCase())){
-            console.log(e.toUpperCase());
+        const KeyBoardbuttons = document.querySelectorAll('.keyrow button');
+        for(let i =0; i < KeyBoardbuttons.length; i++){
+
+        if(this.upperCasePhrase.includes(e.toUpperCase()) &&  KeyBoardbuttons[i].textContent.toUpperCase() === e.toUpperCase()){
+            KeyBoardbuttons[i].disabled = true;
+            console.log(true);
             return true;
-        } else if(e.match(/^[A-Za-z]{1}$/)){
+        } 
+        
+        else if(e.match(/^[A-Za-z]{1}$/)){
+            if(!KeyBoardbuttons[i].disabled){
+            KeyBoardbuttons[i].disabled = true;
             return false;
+            } else{
+                return true;
+            }
         }
+     }  
     }
     
     /**
@@ -51,19 +63,15 @@ class Phrase {
             }
         });
         const KeyBoardbuttons = document.querySelectorAll('.keyrow button');
-
-        for(let i =0; i < KeyBoardbuttons.length;i++){
-            if(e === KeyBoardbuttons[i].textContent && this.upperCasePhrase.includes(e.toUpperCase())){
-             KeyBoardbuttons[i].disabled = true;
-             KeyBoardbuttons[i].classList.add('chosen');
-             break;
-            } else if(e === KeyBoardbuttons[i].textContent){
-            if(KeyBoardbuttons[i].disabled === true){}
-            KeyBoardbuttons[i].disabled = true;
-            KeyBoardbuttons[i].classList.add('wrong');
-            break;
+        KeyBoardbuttons.forEach(button => {
+            if(e === button.textContent && this.upperCasePhrase.includes(e.toUpperCase())){
+             button.disabled = true;
+             button.classList.add('chosen');
+            } else if(e === button.textContent){
+            button.disabled = true;
+            button.classList.add('wrong');
             }
-        };
+        });
 
     }
 
@@ -71,6 +79,8 @@ class Phrase {
     get upperCasePhrase(){
         return this.phrase.map(letter => letter.toUpperCase());
     }
+
+
 }
 
-// letter.classList.add('wrong');
+
