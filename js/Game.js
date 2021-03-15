@@ -105,7 +105,7 @@ class Game {
     appendtoOverlay(winOrLose, h1Message, pMessage){
     const overLay = document.getElementById('overlay');
     const h1 = document.querySelector('#game-over-message');
-    const p = document.createElement('p');
+    const p = document.querySelector('#pmessage');
     overLay.className = winOrLose;
     overLay.style.display = 'block';
     h1.textContent = h1Message;
@@ -130,7 +130,7 @@ class Game {
             this.appendtoOverlay('win',`Congratulations! You've guessed the Phrase`, 
             `Well done. You guessed the phrase with only ${this.triesLeft} live(s) remaining`);
         } else if(this.missed === 5){
-            this.appendtoOverlay('lose',`Oh no! You have run out of lives!`, 'Try again by clicking the restart Game button.');
+            this.appendtoOverlay('lose','Oh no! You have run out of lives!', 'Try again by clicking the restart Game button.');
         }
     }
     
@@ -170,8 +170,8 @@ class Game {
                // removes winning message
                const h1 = document.querySelector('#game-over-message');
                h1.textContent = '';
-               const p = overlay.querySelector('p');
-               overlay.removeChild(p);
+               const p = document.querySelector('#pmessage');
+               p.textContent = '';
                
             })
         }
