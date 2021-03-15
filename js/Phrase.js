@@ -28,24 +28,11 @@ class Phrase {
      */
 
     checkLetter(e){
-        const KeyBoardbuttons = document.querySelectorAll('.keyrow button');
-        for(let i =0; i < KeyBoardbuttons.length; i++){
-
-        if(this.upperCasePhrase.includes(e.toUpperCase()) &&  KeyBoardbuttons[i].textContent.toUpperCase() === e.toUpperCase()){
-            KeyBoardbuttons[i].disabled = true;
-            console.log(true);
+        if(this.upperCasePhrase.includes(e.toUpperCase())){
             return true;
-        } 
-        
-        else if(e.match(/^[A-Za-z]{1}$/)){
-            if(!KeyBoardbuttons[i].disabled){
-            KeyBoardbuttons[i].disabled = true;
+        } else if(e.match(/^[A-Za-z]{1}$/)){
             return false;
-            } else{
-                return true;
-            }
         }
-     }  
     }
     
     /**
@@ -79,8 +66,6 @@ class Phrase {
     get upperCasePhrase(){
         return this.phrase.map(letter => letter.toUpperCase());
     }
-
-
 }
 
-
+// letter.classList.add('wrong');
