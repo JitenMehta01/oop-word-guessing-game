@@ -41,11 +41,13 @@ class Phrase {
      */
 
     showMatchedLetter(e){
-        this.phrase.forEach(letter => {
-            if(letter.toUpperCase() === e.toUpperCase()){
+        const phraseUL = document.querySelector('#phrase ul');
+        this.upperCasePhrase.forEach(letter => {
+            if(letter === e.toUpperCase()){
               let character = document.querySelectorAll(`.${letter.toLowerCase()}`);
               for(let i =0; i < character.length; i++){
               character[i].classList.replace('hide', 'show');
+              this.flipAnimation(character[i]);
               }
             }
         });
@@ -60,12 +62,27 @@ class Phrase {
             }
         });
 
-    }
+        }
 
-
+    /**
+     * transforms the phrase to all capital letters
+     * @return {array} an array containing captalized letters.
+     */
     get upperCasePhrase(){
         return this.phrase.map(letter => letter.toUpperCase());
     }
+
+    /**
+     * adds transofrm effects for flip animation
+     * @param {element} an element wll be passed through 
+     */
+
+    flipAnimation(element){
+        element.style.transformStyle = 'preserve-3d';
+        element.style.transition = 'transform 0.65s cubic-bezier(0.8, 1.8, 0.32, 0.5)';
+        element.style.transform = 'rotateY(180deg) scaleX(-1)';
+
+    }
 }
 
-// letter.classList.add('wrong');
+

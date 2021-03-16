@@ -1,10 +1,9 @@
 
  // click event to start game
-
 const game = new Game();
 const overLay = document.getElementById('overlay');
 
- // starts the game
+// starts the game
  document.addEventListener('click', e =>{
     if(e.target.id === 'btn__reset'){ // click event for start button
     game.startGame();

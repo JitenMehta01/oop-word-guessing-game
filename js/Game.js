@@ -11,14 +11,14 @@ class Game {
      */
 
     createPhrases(){
-    const phrases = [{phrase: 'The Godfather'}, 
-    {phrase:'Shawshank Redemption'},
-    {phrase: 'The Lion King'}, 
-    {phrase:'Forrest Gump'}, 
-    {phrase:'The Silence Of the Lambs'}];
+        const phrases = [{phrase: 'The Godfather'}, 
+        {phrase:'Shawshank Redemption'},
+        {phrase: 'The Lion King'}, 
+        {phrase:'Forrest Gump'}, 
+        {phrase:'The Silence Of the Lambs'}];
 
-    return phrases;
-    }
+        return phrases;
+        }
 
     /**
      * Generates a random phrase, and adds it to the DOM via the addPhraseToDisplay method.
@@ -26,14 +26,14 @@ class Game {
      */
 
     getRandomPhrase(){
-    const phraseLength = this.phrases.length;
-    const randomNum = Math.floor(Math.random() * phraseLength);
-    
-    const phrase = new Phrase(this.phrases[randomNum].phrase);
-    phrase.addPhraseToDisplay();
+        const phraseLength = this.phrases.length;
+        const randomNum = Math.floor(Math.random() * phraseLength);
+        
+        const phrase = new Phrase(this.phrases[randomNum].phrase);
+        phrase.addPhraseToDisplay();
 
-    return phrase
-    }
+        return phrase
+        }
 
     /**
      * Starts the game by selecting a random phrase and displaying to screen
@@ -103,21 +103,21 @@ class Game {
      */
 
     appendtoOverlay(winOrLose, h1Message, pMessage){
-    const overLay = document.getElementById('overlay');
-    const h1 = document.querySelector('#game-over-message');
-    const p = document.querySelector('#pmessage');
-    overLay.className = winOrLose;
-    overLay.style.display = 'block';
-    h1.textContent = h1Message;
-    overLay.appendChild(h1);
-    if(this.missed === 0){
-        p.textContent = `Well done! You got a perfect score!`;
+        const overLay = document.getElementById('overlay');
+        const h1 = document.querySelector('#game-over-message');
+        const p = document.querySelector('#pmessage');
+        overLay.className = winOrLose;
+        overLay.style.display = 'block';
+        h1.textContent = h1Message;
+        overLay.appendChild(h1);
+        if(this.missed === 0){
+            p.textContent = `Well done! You got a perfect score!`;
+            overLay.appendChild(p);
+        } else{
+        p.textContent = pMessage;
         overLay.appendChild(p);
-    } else{
-    p.textContent = pMessage;
-    overLay.appendChild(p);
-      }
-    } 
+        }
+        } 
 
     /**
      * Displays win or loss screen if the user guesses correctly or runs out of lives
@@ -139,45 +139,53 @@ class Game {
      */
 
     restartGame(){
-        const overlay = document.querySelector('#overlay');        
-        if(overlay.classList.contains('win') || overlay.classList.contains('lose')){
-            // resets this missed and this triesLeft
-            this.missed = 0;
-            this.triesLeft = 5;
-            // removes completed / uncompleted phrase
-            const restartButton = document.querySelector('#btn__reset');
-            restartButton.addEventListener('click', e =>{
-               const ul = document.querySelector('#phrase ul');
-               while(ul.firstElementChild){
-                   ul.removeChild(ul.firstElementChild);
-               }
-               // creates a new prhase and appends to DOM
-               this.activePhrase = this.getRandomPhrase();
-               // resets the keyboard buttons
-               const buttons = document.querySelectorAll('.keyrow button');
-               for(let i = 0; i < buttons.length; i++){
-                   if(buttons[i].disabled){
-                    buttons[i].disabled = false;
-                    buttons[i].classList.remove('wrong');
-                    buttons[i].classList.remove('chosen');
-                   }
-               }
-               // resets the heart images
-               const hearts = [...document.querySelectorAll('.tries img')];
-               hearts.forEach(heart => {
-                   heart.src = 'images/liveHeart.png';
-               });
-               // removes winning message
-               const h1 = document.querySelector('#game-over-message');
-               h1.textContent = '';
-               const p = document.querySelector('#pmessage');
-               p.textContent = '';
-               
-            })
-        }
+        // resets this missed and this triesLeft
+        this.missed = 0;
+        this.triesLeft = 5;
+        // removes completed / uncompleted phrase
+        const restartButton = document.querySelector('#btn__reset');
+        restartButton.addEventListener('click', e =>{
+            const ul = document.querySelector('#phrase ul');
+            while(ul.firstElementChild){
+                ul.removeChild(ul.firstElementChild);
+            }
+            // creates a new prhase and appends to DOM
+            this.activePhrase = this.getRandomPhrase();
+            // resets the keyboard buttons
+            const buttons = document.querySelectorAll('.keyrow button');
+            for(let i = 0; i < buttons.length; i++){
+                if(buttons[i].disabled){
+                buttons[i].disabled = false;
+                buttons[i].classList.remove('wrong');
+                buttons[i].classList.remove('chosen');
+                }
+            }
+            // resets the heart images
+            const hearts = [...document.querySelectorAll('.tries img')];
+            hearts.forEach(heart => {
+                heart.src = 'images/liveHeart.png';
+            });
+            // removes winning message
+            const h1 = document.querySelector('#game-over-message');
+            h1.textContent = '';
+            const p = document.querySelector('#pmessage');
+            p.textContent = '';
+            
+        });
+        
     }      
 
-          
+    /**
+     * checks to see if the game has ended
+     * @return {boolen} returns true true is game has ended
+     */
+
+     get winOrlLose(){
+        if(this.missed === 5 || this.comparePhraselength() === game.activePhrase.phrase.length){
+            return true;
+            } 
+    }
+
     /**
      * Handles the interaction of the game and calls many of the methods above.
      */
@@ -191,8 +199,22 @@ class Game {
             this.missed += 1;
             this.triesLeft -= 1;
         } 
-        this.gameOver();
-        this.restartGame();
+
+        this.winOrlLose ? this.gameOver() : console.log(false); // only fires if guessed correctly or run out of lives
+        
+
+        const overlay = document.querySelector('#overlay');        
+        if(overlay.classList.contains('win') || overlay.classList.contains('lose')){
+            const ul = document.querySelector('#phrase ul');
+            console.log(ul);
+            while(ul.firstElementChild){
+                ul.removeChild(ul.firstElementChild); // removes LI items once game is over
+            }   
+            this.restartGame(); // only fires if the win or lose screen appears.
+    }
+        
         
     }
+
+
 }
