@@ -1,75 +1,43 @@
 class Phrase {
     constructor(phrase){
-        this.phrase = [...phrase];
-    }
-
-    /**
-     * Displays phrase to game board
-     */
-
-    addPhraseToDisplay(){
-        const phraseContainer = document.querySelector('#phrase ul');
-
-        for(let i =0; i < this.phrase.length; i++){
-            // first checks for whitespace
-            if(this.phrase[i].match(/\s/g)){
-            phraseContainer.innerHTML += `
-            <li class="space"> </li>`
-            } else {
-                phraseContainer.innerHTML += `
-                <li class="hide letter ${this.phrase[i].toLowerCase()}">${this.phrase[i].toUpperCase()}</li>`;       
-            }
-        }
-    }
-
-    /**
-     * checks if selected letter is in phrase and reveals in DOM if true.
-     * @param (string) letter - letter to check
-     */
-
-    checkLetter(e){
-        if(this.upperCasePhrase.includes(e.toUpperCase())){
-            return true;
-        } else if(e.match(/^[A-Za-z]{1}$/)){
-            return false;
-        }
+        this.phrase = [...phrase.toLowerCase()];
     }
     
     /**
-     * Changes class of li item if it matches keyboard button.
-     * @param (string) letter - letter to match
+     * Displays phrase on game board
      */
+
+    addphrasetoDisplay(){
+        const phraseUL = document.querySelector('#phrase ul');
+        this.phrase.forEach(letter => {
+            if(letter.match(/^\s+$/)){
+                phraseUL.innerHTML += `
+                <li class="space"> </li>
+                `;
+            } else{
+                phraseUL.innerHTML += `
+                <li class="hide letter ${letter}">${letter.toUpperCase()}</li>`;
+            }
+        })
+    }
+
+    checkLetter(e){
+        const phraseJoin = this.phrase.join('');
+        if(phraseJoin.includes(e.toLowerCase())){
+            console.log(true);
+            return true;
+        } else{
+            return false;
+        }
+    }
 
     showMatchedLetter(e){
-        const phraseUL = document.querySelector('#phrase ul');
-        this.upperCasePhrase.forEach(letter => {
-            if(letter === e.toUpperCase()){
-              let character = document.querySelectorAll(`.${letter.toLowerCase()}`);
-              for(let i =0; i < character.length; i++){
-              character[i].classList.replace('hide', 'show');
-              this.flipAnimation(character[i]);
-              }
-            }
-        });
-        const KeyBoardbuttons = document.querySelectorAll('.keyrow button');
-        KeyBoardbuttons.forEach(button => {
-            if(e === button.textContent && this.upperCasePhrase.includes(e.toUpperCase())){
-             button.disabled = true;
-             button.classList.add('chosen');
-            } else if(e === button.textContent){
-            button.disabled = true;
-            button.classList.add('wrong');
-            }
-        });
-
+        const matchedLi = document.querySelectorAll(`.${e}`);
+        for(let i =0; i < matchedLi.length; i++){
+            matchedLi[i].classList.remove('hide');
+            matchedLi[i].classList.add('show');
+            this.flipAnimation(matchedLi[i]);
         }
-
-    /**
-     * transforms the phrase to all capital letters
-     * @return {array} an array containing captalized letters.
-     */
-    get upperCasePhrase(){
-        return this.phrase.map(letter => letter.toUpperCase());
     }
 
     /**
@@ -78,11 +46,9 @@ class Phrase {
      */
 
     flipAnimation(element){
-        element.style.transformStyle = 'preserve-3d';
-        element.style.transition = 'transform 0.65s cubic-bezier(0.8, 1.8, 0.32, 0.5)';
-        element.style.transform = 'rotateY(180deg) scaleX(-1)';
-
+    element.style.transformStyle = 'preserve-3d';
+    element.style.transition = 'transform 0.65s cubic-bezier(0.8, 1.8, 0.32, 0.5)';
+    element.style.transform = 'rotateY(180deg) scaleX(-1)';
     }
+
 }
-
-
