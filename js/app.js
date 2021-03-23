@@ -22,7 +22,6 @@ document.addEventListener('keydown', e =>{
         if(!KeyBoardbuttons[i].disabled){
           game.handleinteraction(e);
           e.stopImmediatePropagation();
-          KeyBoardbuttons[i].disabled = true;
             }
           }
         }
