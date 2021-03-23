@@ -1,102 +1,94 @@
-class Game {
+class Game{
     constructor(){
         this.missed = 0;
-        this.triesLeft = 5;
         this.phrases = this.createPhrases();
-        this.activePhrase = this.getRandomPhrase();
+        this.activePhrase = null;
+        this.triesLeft = 5;
     }
+
+    
     /**
-     * Phrases to be used in the game
-     * @return {array} returns an array of phrases.
+     * Begins Game by hiding overlay and selecting random phrase and displaying it to the user
      */
 
+     startGame(){
+        const overlay = document.querySelector('#overlay');
+        overlay.style.display = 'none'
+        const phrase = this.getRandomPhrase();
+        phrase.addphrasetoDisplay();
+        this.activePhrase = phrase;
+
+    }
+
+    /**
+     * creates a phrase object from the Phrase class.
+     * @return {array} An array of phrases that could be used in the game.
+     */
     createPhrases(){
-        const phrases = [{phrase: 'The Godfather'}, 
-        {phrase:'Shawshank Redemption'},
-        {phrase: 'The Lion King'}, 
-        {phrase:'Forrest Gump'}, 
-        {phrase:'The Silence Of the Lambs'}];
+        const phrases = [
+          new Phrase('The Lion King'), 
+          new Phrase('The Godfather'), 
+          new Phrase ('Shawshank Redemption'),
+          new Phrase('Forrest Gump'), 
+          new Phrase('The silence of the lambs')
+        ];
 
         return phrases;
-        }
-
-    /**
-     * Generates a random phrase, and adds it to the DOM via the addPhraseToDisplay method.
-     * @return {object} An object containing a phrase.
-     */
-
-    getRandomPhrase(){
-        const phraseLength = this.phrases.length;
-        const randomNum = Math.floor(Math.random() * phraseLength);
-        
-        const phrase = new Phrase(this.phrases[randomNum].phrase);
-        phrase.addPhraseToDisplay();
-
-        return phrase
-        }
-
-    /**
-     * Starts the game by selecting a random phrase and displaying to screen
-     * removes win or lose classes from overlay so the restart conditional works
-     */
-
-    startGame(){
-        const overLay = document.getElementById('overlay');
-        overLay.style.display = 'none';
-        if(overLay.classList.contains('win') || overLay.classList.contains('lose')){
-            overlay.classList.remove('win');
-            overlay.classList.remove('lose');
-            overlay.classList.add('start');
-        }
-
     }
 
     /**
-     * Checks if the user has matched all letters in phrase
-     * @return {boolean} True if all letters have been matched. False if not.
+     * checks to see if the game has ended
+     * @return {boolen} returns true true is game has ended
      */
 
-    checkforWin(){
-        const phraseLength = this.activePhrase.phrase.length;
-        let showCharacter = document.querySelectorAll('.show');
-        let spaceCharacter = document.querySelectorAll('.space');
-
-        if(spaceCharacter.length + showCharacter.length === phraseLength){
-            return true;
-        } else {
-            return false;
-        }
-        }
-
+    get winOrlLose(){
+    if(this.missed === 5 || this.comparePhraselength === game.activePhrase.phrase.length){
+        return true;
+        } 
+    }
+    
     /**
      * Stores all correctly guessed letters plus spaces
      * @return {number} Total length of correctly guessed characters + spaces/
      */
 
-    comparePhraselength(){
+    get comparePhraselength(){
         const AllLetters = [...document.querySelectorAll('#phrase ul li')];
-        const hideLetters = [...document.querySelectorAll('.space')];
+        const spaceLetters = [...document.querySelectorAll('.space')];
         const showLetters = AllLetters.filter(letter =>{
             if(letter.className.includes('show')){
                 return letter;
             }    
         });
-        return hideLetters.length + showLetters.length;
+        return spaceLetters.length + showLetters.length;
     }
 
     /**
-     * Removes heart image if user guesses incorrectly
-     */
+    * Selects random phrase from phrases property
+    * @return {Object} Phrase object chosen to be used
+    */
+    getRandomPhrase(){
+        const randomNum = Math.floor((Math.random() * this.phrases.length));
+        return this.phrases[randomNum];
+    }
+
+    checkforWin(){
+        const letters = document.querySelectorAll('.show');
+        const space = document.querySelectorAll('.space');
+        const lettersandSpaces = letters.length + space.length;
+        const phraseLength = this.activePhrase.phrase.length;
+
+        lettersandSpaces === phraseLength ? true : false;
+    }
 
     removeLife(){
-        const lives = document.querySelectorAll('.tries img');
-        for(let i =0; i < lives.length; i++){
-            if(lives[i].src.includes('images/liveHeart.png')){
-                lives[i].src = 'images/lostHeart.png';
-                break;
-            }
+            const lives = document.querySelectorAll('.tries img');
+                if(lives[this.missed].src.includes('images/liveHeart.png')){
+                    lives[this.missed].src = 'images/lostHeart.png';
+                    this.missed += 1;
+                    this.triesLeft -=1;
+                }
         }
-    }
 
     /**
      * a refactoring method that helps to build out win or loss message
@@ -107,7 +99,7 @@ class Game {
         const h1 = document.querySelector('#game-over-message');
         const p = document.querySelector('#pmessage');
         overLay.className = winOrLose;
-        overLay.style.display = 'block';
+        overLay.style.display = 'flex';
         h1.textContent = h1Message;
         overLay.appendChild(h1);
         if(this.missed === 0){
@@ -124,8 +116,7 @@ class Game {
      */
 
     gameOver(){
-        const phraseDisplay = this.comparePhraselength();
-        const overLay = document.getElementById('overlay');
+        const phraseDisplay = this.comparePhraselength;
         if(phraseDisplay === game.activePhrase.phrase.length){
             this.appendtoOverlay('win',`Congratulations! You've guessed the Phrase`, 
             `Well done. You guessed the phrase with ${this.triesLeft} live(s) remaining`);
@@ -133,88 +124,86 @@ class Game {
             this.appendtoOverlay('lose','Oh no! You have run out of lives!', 'Try again by clicking the start Game button.');
         }
     }
-    
-    /**
-     * Restarts game
-     */
 
-    restartGame(){
-        // resets this missed and this triesLeft
-        this.missed = 0;
-        this.triesLeft = 5;
-        // removes completed / uncompleted phrase
-        const restartButton = document.querySelector('#btn__reset');
-        restartButton.addEventListener('click', e =>{
-            const ul = document.querySelector('#phrase ul');
-            while(ul.firstElementChild){
-                ul.removeChild(ul.firstElementChild);
+    reset(){
+        const ul = document.querySelector('#phrase ul');
+        while(ul.firstElementChild){
+            ul.removeChild(ul.firstElementChild);
+        }
+        const keys = document.querySelectorAll('.key');
+
+        keys.forEach(key =>{
+            key.disabled = false;
+            if(key.classList.contains('chosen')){
+                key.classList.remove('chosen');
+            } else if(key.classList.contains('wrong')){
+                key.classList.remove('wrong');
             }
-            // creates a new prhase and appends to DOM
-            this.activePhrase = this.getRandomPhrase();
-            // resets the keyboard buttons
-            const buttons = document.querySelectorAll('.keyrow button');
-            for(let i = 0; i < buttons.length; i++){
-                if(buttons[i].disabled){
-                buttons[i].disabled = false;
-                buttons[i].classList.remove('wrong');
-                buttons[i].classList.remove('chosen');
-                }
-            }
-            // resets the heart images
-            const hearts = [...document.querySelectorAll('.tries img')];
-            hearts.forEach(heart => {
-                heart.src = 'images/liveHeart.png';
-            });
-            // removes winning message
-            const h1 = document.querySelector('#game-over-message');
-            h1.textContent = '';
-            const p = document.querySelector('#pmessage');
-            p.textContent = '';
-            
         });
-        
-    }      
 
-    /**
-     * checks to see if the game has ended
-     * @return {boolen} returns true true is game has ended
-     */
-
-     get winOrlLose(){
-        if(this.missed === 5 || this.comparePhraselength() === game.activePhrase.phrase.length){
-            return true;
-            } 
+        const hearts = [...document.querySelectorAll('.tries img')];
+        hearts.forEach(heart => {
+            heart.src = 'images/liveHeart.png';
+        });
     }
 
-    /**
-     * Handles the interaction of the game and calls many of the methods above.
-     */
 
-    handleInteraction(e){
-        const checkLetter = this.activePhrase.checkLetter(e);
-        this.activePhrase.showMatchedLetter(e);
 
-        if(checkLetter === false){
-            this.removeLife();
-            this.missed += 1;
-            this.triesLeft -= 1;
+    handleinteraction(e){
+        let eventContent;
+
+        // for onScreen keyboard clicks
+        if(e.type === 'click'){
+            eventContent = e.target.textContent;
+            if(this.activePhrase.checkLetter(eventContent) === false){
+                e.target.disabled = true;
+                e.target.classList.add('wrong');
+            } else{
+                e.target.classList.add('chosen');
+                e.target.disabled = true;
+            }
         } 
-
-        this.winOrlLose ? this.gameOver() : console.log(false); // only fires if guessed correctly or run out of lives
         
 
-        const overlay = document.querySelector('#overlay');        
-        if(overlay.classList.contains('win') || overlay.classList.contains('lose')){
-            const ul = document.querySelector('#phrase ul');
-            console.log(ul);
-            while(ul.firstElementChild){
-                ul.removeChild(ul.firstElementChild); // removes LI items once game is over
-            }   
-            this.restartGame(); // only fires if the win or lose screen appears.
-    }
-        
-        
-    }
+        // for keydown events    
+        else if(e.type === 'keydown'){
+            eventContent = e.key;
+            const keys = [...document.querySelectorAll('.key')];
+            if(this.activePhrase.checkLetter(eventContent) === false){
+                keys.forEach(key =>{
+                    if(key.textContent === eventContent){
+                        key.classList.add('wrong');
+                        key.disabled = true;
+                    }
+                });
+            } else{
+                keys.forEach(key =>{
+                    if(key.textContent === eventContent){
+                        key.classList.add('chosen');
+                        key.disabled = true;
+                    }
+                });
+            }
+        }
+
+// applies to both events
+       if(this.activePhrase.checkLetter(eventContent) === false){
+           this.removeLife();
+           } else{
+            this.activePhrase.showMatchedLetter(eventContent);
+            this.checkforWin();
+       }
+
+// weather win or loose, the following will run
+       if(this.winOrlLose){
+        this.gameOver();
+        this.reset()
+      }
+
+    }   
+    
+
+
 
 
 }
