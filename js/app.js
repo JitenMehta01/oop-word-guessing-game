@@ -1,31 +1,30 @@
 
- // click event to start game
-const game = new Game();
-const overLay = document.getElementById('overlay');
+let game;
+const startGameButton = document.querySelector('#btn__reset');
 
-// starts the game
- document.addEventListener('click', e =>{
-    if(e.target.id === 'btn__reset'){ // click event for start button
-    game.startGame();
-    }
-// listens out for click events on onScreen keyboard
+startGameButton.addEventListener('click', e =>{
+    game = new Game();
+    game.startGame()
+});
+
+document.addEventListener('click', e =>{
     if(e.target.className === 'key'){
-      game.handleInteraction(e.target.textContent);
+    game.handleinteraction(e)
     }
-// listens for user Keyboard input.
-    document.addEventListener('keydown', e =>{
-      if(overLay.style.display === 'none'){ // only applies when game in playable.
-      const KeyBoardbuttons = document.querySelectorAll('.keyrow button');
-      for(let i =0; i < KeyBoardbuttons.length;i++){
-        if(e.key.toUpperCase() === KeyBoardbuttons[i].textContent.toUpperCase()){ // stops individual keyboard buttons being pressed more than once.
-          if(!KeyBoardbuttons[i].disabled){
-            game.handleInteraction(e.key);
-            e.stopImmediatePropagation();
-            KeyBoardbuttons[i].disabled = true;
-              }
+});
+
+document.addEventListener('keydown', e =>{
+    const overLay = document.querySelector('#overlay');
+    if(overLay.style.display === 'none'){ // only applies when game in playable.
+    const KeyBoardbuttons = document.querySelectorAll('.keyrow button');
+    for(let i =0; i < KeyBoardbuttons.length;i++){
+      if(e.key.toUpperCase() === KeyBoardbuttons[i].textContent.toUpperCase()){ // stops individual keyboard buttons being pressed more than once.
+        if(!KeyBoardbuttons[i].disabled){
+          game.handleinteraction(e);
+          e.stopImmediatePropagation();
+          KeyBoardbuttons[i].disabled = true;
             }
           }
         }
-      });
-     
- });
+      }
+    });
