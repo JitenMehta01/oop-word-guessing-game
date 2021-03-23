@@ -21,15 +21,20 @@ class Phrase {
         })
     }
 
+    /**
+    * Checks if passed letter is in phrase
+    * @param (string) letter - Letter to check
+    */
+
     checkLetter(e){
         const phraseJoin = this.phrase.join('');
-        if(phraseJoin.includes(e.toLowerCase())){
-            console.log(true);
-            return true;
-        } else{
-            return false;
-        }
+        return phraseJoin.includes(e.toLowerCase()) ? true : false;
     }
+
+    /**
+    * Displays passed letter on screen after a match is found
+    * @param (string) letter - Letter to display
+    */
 
     showMatchedLetter(e){
         const matchedLi = document.querySelectorAll(`.${e}`);
