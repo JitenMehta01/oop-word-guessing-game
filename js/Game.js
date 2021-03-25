@@ -14,9 +14,8 @@ class Game{
      startGame(){
         const overlay = document.querySelector('#overlay');
         overlay.style.display = 'none'
-        const phrase = this.getRandomPhrase();
-        phrase.addphrasetoDisplay();
-        this.activePhrase = phrase;
+        this.activePhrase = this.getRandomPhrase();
+        this.activePhrase.addphrasetoDisplay();
 
     }
 
@@ -36,16 +35,6 @@ class Game{
         return phrases;
     }
 
-    /**
-     * checks to see if the game has ended
-     * @return {boolen} returns true true is game has ended
-     */
-
-    get winOrlLose(){
-    if(this.missed === 5 || this.comparePhraselength === game.activePhrase.phrase.length){
-        return true;
-        } 
-    }
     
     /**
      * Stores all correctly guessed letters plus spaces
@@ -84,7 +73,7 @@ class Game{
         const lettersandSpaces = letters.length + space.length;
         const phraseLength = this.activePhrase.phrase.length;
 
-        lettersandSpaces === phraseLength ? true : false;
+       return lettersandSpaces === phraseLength ? true : false;
     }
 
     /**
@@ -94,12 +83,14 @@ class Game{
     */
 
     removeLife(){
+        if(this.missed === 5){
+            this.gameOver(true);
+        } else{
             const lives = document.querySelectorAll('.tries img');
-                if(lives[this.missed].src.includes('images/liveHeart.png')){
                     lives[this.missed].src = 'images/lostHeart.png';
                     this.missed += 1;
                     this.triesLeft -=1;
-                }
+            } 
         }
 
     /**
@@ -168,7 +159,7 @@ class Game{
     * Handles onscreen keyboard button clicks
     * @param (event) either click or keydown
     */
-    handleinteraction(e){
+    handleInteraction(e){
         let eventContent;
     // for onScreen keyboard clicks
         if(e.type === 'click'){
@@ -209,7 +200,7 @@ class Game{
             this.checkforWin();
        }
     // weather win or loose, the following will run
-       if(this.winOrlLose){
+       if(this.checkforWin()){
         this.gameOver();
         this.reset()
       }
