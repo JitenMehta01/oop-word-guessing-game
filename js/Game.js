@@ -14,9 +14,9 @@ class Game{
      startGame(){
         const overlay = document.querySelector('#overlay');
         overlay.style.display = 'none'
-        const phrase = this.getRandomPhrase();
-        phrase.addphrasetoDisplay();
-        this.activePhrase = phrase;
+
+        this.activePhrase = this.getRandomPhrase();
+        this.activePhrase.addphrasetoDisplay()
 
     }
 
@@ -35,33 +35,7 @@ class Game{
 
         return phrases;
     }
-
-    /**
-     * checks to see if the game has ended
-     * @return {boolen} returns true true is game has ended
-     */
-
-    get winOrlLose(){
-    if(this.missed === 5 || this.comparePhraselength === game.activePhrase.phrase.length){
-        return true;
-        } 
-    }
     
-    /**
-     * Stores all correctly guessed letters plus spaces
-     * @return {number} Total length of correctly guessed characters + spaces/
-     */
-
-    get comparePhraselength(){
-        const AllLetters = [...document.querySelectorAll('#phrase ul li')];
-        const spaceLetters = [...document.querySelectorAll('.space')];
-        const showLetters = AllLetters.filter(letter =>{
-            if(letter.className.includes('show')){
-                return letter;
-            }    
-        });
-        return spaceLetters.length + showLetters.length;
-    }
 
     /**
     * Selects random phrase from phrases property
@@ -84,7 +58,7 @@ class Game{
         const lettersandSpaces = letters.length + space.length;
         const phraseLength = this.activePhrase.phrase.length;
 
-        lettersandSpaces === phraseLength ? true : false;
+        return lettersandSpaces === phraseLength ? true : false;
     }
 
     /**
@@ -94,13 +68,17 @@ class Game{
     */
 
     removeLife(){
-            const lives = document.querySelectorAll('.tries img');
-                if(lives[this.missed].src.includes('images/liveHeart.png')){
-                    lives[this.missed].src = 'images/lostHeart.png';
-                    this.missed += 1;
-                    this.triesLeft -=1;
-                }
-        }
+          
+        const lives = document.querySelectorAll('.tries img');
+        lives[this.missed].src = 'images/lostHeart.png';
+        this.missed += 1;
+        this.triesLeft -=1;
+
+        if(this.missed == 5){
+            this.gameOver(false);
+            this.reset()
+            } 
+    }
 
     /**
      * a refactoring method that helps to build out win or loss message
@@ -128,12 +106,12 @@ class Game{
     * @param {boolean} gameWon - Whether or not the user won the game
     */
 
-    gameOver(){
-        const phraseDisplay = this.comparePhraselength;
-        if(phraseDisplay === game.activePhrase.phrase.length){
+    gameOver(gameWon){
+
+        if(gameWon){
             this.appendtoOverlay('win',`Congratulations! You've guessed the Phrase`, 
             `Well done. You guessed the phrase with ${this.triesLeft} live(s) remaining`);
-        } else if(this.missed === 5){
+        } else{
             this.appendtoOverlay('lose','Oh no! You have run out of lives!', 'Try again by clicking the start Game button.');
         }
     }
@@ -163,12 +141,13 @@ class Game{
             heart.src = 'images/liveHeart.png';
         });
     }
+    
 
     /**
     * Handles onscreen keyboard button clicks
     * @param (event) either click or keydown
     */
-    handleinteraction(e){
+    handleInteraction(e){
         let eventContent;
     // for onScreen keyboard clicks
         if(e.type === 'click'){
@@ -208,9 +187,9 @@ class Game{
             this.activePhrase.showMatchedLetter(eventContent);
             this.checkforWin();
        }
-    // weather win or loose, the following will run
-       if(this.winOrlLose){
-        this.gameOver();
+    // If user has Won, end the game and rest board
+       if(this.checkforWin()){
+        this.gameOver(true);
         this.reset()
       }
     }   
