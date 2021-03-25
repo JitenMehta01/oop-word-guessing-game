@@ -14,8 +14,9 @@ class Game{
      startGame(){
         const overlay = document.querySelector('#overlay');
         overlay.style.display = 'none'
-        this.activePhrase = this.getRandomPhrase();
-        this.activePhrase.addphrasetoDisplay();
+        const phrase = this.getRandomPhrase();
+        phrase.addphrasetoDisplay();
+        this.activePhrase = phrase;
 
     }
 
@@ -35,6 +36,16 @@ class Game{
         return phrases;
     }
 
+    /**
+     * checks to see if the game has ended
+     * @return {boolen} returns true true is game has ended
+     */
+
+    get winOrlLose(){
+    if(this.missed === 5 || this.comparePhraselength === game.activePhrase.phrase.length){
+        return true;
+        } 
+    }
     
     /**
      * Stores all correctly guessed letters plus spaces
@@ -61,24 +72,34 @@ class Game{
         return this.phrases[randomNum];
     }
 
+    /**
+    * Checks for winning move
+    * @return {boolean} True if game has been won, false if game wasn't
+    won
+    */
+
     checkforWin(){
         const letters = document.querySelectorAll('.show');
         const space = document.querySelectorAll('.space');
         const lettersandSpaces = letters.length + space.length;
         const phraseLength = this.activePhrase.phrase.length;
 
-       return lettersandSpaces === phraseLength ? true : false;
+        lettersandSpaces === phraseLength ? true : false;
     }
 
+    /**
+    * Increases the value of the missed property
+    * Removes a life from the scoreboard
+    * Checks if player has remaining lives and ends game if player is out
+    */
+
     removeLife(){
-        if(this.missed === 5){
-            this.gameOver(true);
-        } else{
             const lives = document.querySelectorAll('.tries img');
+                if(lives[this.missed].src.includes('images/liveHeart.png')){
                     lives[this.missed].src = 'images/lostHeart.png';
                     this.missed += 1;
                     this.triesLeft -=1;
-            } 
+                }
         }
 
     /**
@@ -103,8 +124,9 @@ class Game{
         } 
 
     /**
-     * Displays win or loss screen if the user guesses correctly or runs out of lives
-     */
+    * Displays game over message
+    * @param {boolean} gameWon - Whether or not the user won the game
+    */
 
     gameOver(){
         const phraseDisplay = this.comparePhraselength;
@@ -115,6 +137,10 @@ class Game{
             this.appendtoOverlay('lose','Oh no! You have run out of lives!', 'Try again by clicking the start Game button.');
         }
     }
+
+    /**
+    * resets game elements if game has ended
+    */
 
     reset(){
         const ul = document.querySelector('#phrase ul');
@@ -138,20 +164,13 @@ class Game{
         });
     }
 
-<<<<<<< HEAD
     /**
     * Handles onscreen keyboard button clicks
     * @param (event) either click or keydown
     */
-    handleInteraction(e){
-=======
-
-
     handleinteraction(e){
->>>>>>> parent of 76913c1... final changes
         let eventContent;
-
-        // for onScreen keyboard clicks
+    // for onScreen keyboard clicks
         if(e.type === 'click'){
             eventContent = e.target.textContent;
             if(this.activePhrase.checkLetter(eventContent) === false){
@@ -162,9 +181,7 @@ class Game{
                 e.target.disabled = true;
             }
         } 
-        
-
-        // for keydown events    
+    // for keydown events    
         else if(e.type === 'keydown'){
             eventContent = e.key;
             const keys = [...document.querySelectorAll('.key')];
@@ -184,30 +201,17 @@ class Game{
                 });
             }
         }
-
-// applies to both events
+    // applies to both events
        if(this.activePhrase.checkLetter(eventContent) === false){
            this.removeLife();
            } else{
             this.activePhrase.showMatchedLetter(eventContent);
             this.checkforWin();
        }
-<<<<<<< HEAD
     // weather win or loose, the following will run
-       if(this.checkforWin()){
-=======
-
-// weather win or loose, the following will run
        if(this.winOrlLose){
->>>>>>> parent of 76913c1... final changes
         this.gameOver();
         this.reset()
       }
-
     }   
-    
-
-
-
-
 }

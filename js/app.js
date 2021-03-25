@@ -1,4 +1,3 @@
-
 let game;
 const startGameButton = document.querySelector('#btn__reset');
 
@@ -9,7 +8,7 @@ startGameButton.addEventListener('click', e =>{
 
 document.addEventListener('click', e =>{
     if(e.target.className === 'key'){
-    game.handleInteraction(e)
+    game.handleinteraction(e)
     }
 });
 
@@ -20,7 +19,7 @@ document.addEventListener('keydown', e =>{
     for(let i =0; i < KeyBoardbuttons.length;i++){
       if(e.key.toUpperCase() === KeyBoardbuttons[i].textContent.toUpperCase()){ // stops individual keyboard buttons being pressed more than once.
         if(!KeyBoardbuttons[i].disabled){
-          game.handleInteraction(e);
+          game.handleinteraction(e);
           e.stopImmediatePropagation();
             }
           }
