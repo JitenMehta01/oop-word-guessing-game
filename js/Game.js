@@ -61,12 +61,6 @@ class Game{
         return this.phrases[randomNum];
     }
 
-    /**
-    * Checks for winning move
-    * @return {boolean} True if game has been won, false if game wasn't
-    won
-    */
-
     checkforWin(){
         const letters = document.querySelectorAll('.show');
         const space = document.querySelectorAll('.space');
@@ -75,12 +69,6 @@ class Game{
 
        return lettersandSpaces === phraseLength ? true : false;
     }
-
-    /**
-    * Increases the value of the missed property
-    * Removes a life from the scoreboard
-    * Checks if player has remaining lives and ends game if player is out
-    */
 
     removeLife(){
         if(this.missed === 5){
@@ -115,9 +103,8 @@ class Game{
         } 
 
     /**
-    * Displays game over message
-    * @param {boolean} gameWon - Whether or not the user won the game
-    */
+     * Displays win or loss screen if the user guesses correctly or runs out of lives
+     */
 
     gameOver(){
         const phraseDisplay = this.comparePhraselength;
@@ -128,10 +115,6 @@ class Game{
             this.appendtoOverlay('lose','Oh no! You have run out of lives!', 'Try again by clicking the start Game button.');
         }
     }
-
-    /**
-    * resets game elements if game has ended
-    */
 
     reset(){
         const ul = document.querySelector('#phrase ul');
@@ -155,13 +138,20 @@ class Game{
         });
     }
 
+<<<<<<< HEAD
     /**
     * Handles onscreen keyboard button clicks
     * @param (event) either click or keydown
     */
     handleInteraction(e){
+=======
+
+
+    handleinteraction(e){
+>>>>>>> parent of 76913c1... final changes
         let eventContent;
-    // for onScreen keyboard clicks
+
+        // for onScreen keyboard clicks
         if(e.type === 'click'){
             eventContent = e.target.textContent;
             if(this.activePhrase.checkLetter(eventContent) === false){
@@ -172,7 +162,9 @@ class Game{
                 e.target.disabled = true;
             }
         } 
-    // for keydown events    
+        
+
+        // for keydown events    
         else if(e.type === 'keydown'){
             eventContent = e.key;
             const keys = [...document.querySelectorAll('.key')];
@@ -192,17 +184,30 @@ class Game{
                 });
             }
         }
-    // applies to both events
+
+// applies to both events
        if(this.activePhrase.checkLetter(eventContent) === false){
            this.removeLife();
            } else{
             this.activePhrase.showMatchedLetter(eventContent);
             this.checkforWin();
        }
+<<<<<<< HEAD
     // weather win or loose, the following will run
        if(this.checkforWin()){
+=======
+
+// weather win or loose, the following will run
+       if(this.winOrlLose){
+>>>>>>> parent of 76913c1... final changes
         this.gameOver();
         this.reset()
       }
+
     }   
+    
+
+
+
+
 }
